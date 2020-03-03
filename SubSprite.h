@@ -4,6 +4,7 @@
 byte frameSub = 0;
 
 void die() {
+  moveSubButton = false;
   show_octopus_leg3_1 = true;
   show_octopus_leg3_2 = true;
   show_octopus_leg3_3 = true;
@@ -42,24 +43,24 @@ void animSubGold() {
       gb.sound.play("OR.WAV");
       subGold = true;
       subMove = 5;
-      animFrame = 0;
+      animFrame = 1;
       catchGold = false;
     }
   } else if (subGold == true) {
     if (animFrame == 0) {
       diverToShow = 5;
       diverArmToShow = 1;
-      diverBagToShow = 5 ;
+      diverBagToShow = 6 ;
     }
     if (animFrame == 1) {
       diverToShow = 5;
       diverArmToShow = 2;
-      diverBagToShow = 5 ;
+      diverBagToShow = 6 ;
     }
     if (animFrame == 2) {
       diverToShow = 5;
       diverArmToShow = 3;
-      diverBagToShow = 5 ;
+      diverBagToShow = 6 ;
     }
     if (animFrame == 3) {
       ++score;
@@ -71,7 +72,7 @@ void animSubGold() {
       catchGold = false;
     }
   }
-  if (moveTick == maxTick) {
+  if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
     animFrame++;
   }
 }
@@ -113,7 +114,7 @@ void Sub() {
       show_SpriteDiver2 = true;
       show_SpriteDiver3 = false;
     }
-    if (moveTick == maxTick) {
+    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
       animBarca++;
     }
     die();
@@ -125,8 +126,9 @@ void Sub() {
       subGold = false;
       --life;
       frameSub = 0;
+      moveSubButton = true;
     }
-    if (moveTick == maxTick) {
+    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
       frameSub++;
       gb.sound.playTick();
     }
@@ -146,7 +148,7 @@ void Sub() {
       show_SpriteDiver2 = false;
       show_SpriteDiver3 = false;
     }
-    if (moveTick == maxTick) {
+    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
       animBarca++;
     }
     die();
@@ -158,8 +160,9 @@ void Sub() {
       subGold = false;
       --life;
       frameSub = 0;
+      moveSubButton = true;
     }
-    if (moveTick == maxTick) {
+    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
       frameSub++;
       gb.sound.playTick();
     }
@@ -179,8 +182,9 @@ void Sub() {
       subGold = false;
       --life;
       frameSub = 0;
+      moveSubButton = true;
     }
-    if (moveTick == maxTick) {
+    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
       frameSub++;
       gb.sound.playTick();
     }

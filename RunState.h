@@ -163,7 +163,14 @@ class RunState {
         if (diverBagToShow > 0) drawSprite(diverBag[diverBagToShow - 1], sliceY, buffer);
 
         // Draw score
-        drawScore(score, sliceY, buffer);
+                
+        // the number that represents the value to be displayed
+        // will be decomposed into digits, and each digit will be
+        // displayed as a simple sprite
+        String   s = String(score);
+        uint8_t  n = s.length();
+        for (uint8_t i = 0; i < n; i++) drawDigitOnSlice(s.charAt(i) - '0', n - i - 1, sliceY, buffer);
+        
 
         // Verify that previous buffer has been sent to the DMA controller
         if (sliceIndex != 0) waitForPreviousDraw();

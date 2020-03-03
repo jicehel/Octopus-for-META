@@ -9,6 +9,11 @@
 // Initialization related to the DMA controller
 // -------------------------------------------------------------------------
 
+static constexpr uint8_t DigitWidth      = 5; // width of each digit's sprite
+static constexpr uint8_t DigitHeight     = 9; // height of each digit's sprite
+static constexpr uint8_t DigitOffset     = 2; // offset in pixels between two digits
+static constexpr uint8_t DigitSheetWidth = 10 * DigitWidth; // total width of the digits spritesheet
+
 namespace Gamebuino_Meta {
 
 #define DMA_DESC_COUNT 3
@@ -77,42 +82,28 @@ void drawText(Sprite sprite, uint8_t sliceY, uint16_t* buffer, uint8_t x, uint8_
   }
 }
 
+void drawDigitOnSlice(uint8_t digit, uint8_t index, uint8_t sliceY, uint16_t * buffer) {
+  // calculates the coordinates of the sprite
+  uint8_t dx = 119 - index * (DigitWidth + DigitOffset);
+  uint8_t dy = 6;
 
-void drawScore(uint16_t displayScore, uint8_t sliceY, uint16_t* buffer) {
   // we check first of all that the intersection between
   // the sprite and the current slice is not empty
-  if (sliceY < 20 && sliceY + sliceHeight > 11 ) {
+  if (sliceY < dy + DigitHeight && dy < sliceY + sliceHeight) {
     // determines the boundaries of the sprite surface within the current slice
-    uint8_t  xMin = 102;
-    uint8_t  yMin = (12 < sliceY) ? sliceY : 12;
-    uint8_t  yMax = (19 >= sliceY + sliceHeight) ? sliceY + sliceHeight - 1 : 18;
-    uint16_t color;
-    uint16_t remainder = displayScore;
-
-    // Draw each digit of the score
-    for (uint16_t divisor = 1000; divisor > 0; divisor /= 10)     {  // The limit is 4 because 10000 is pow(10, 4)
-      uint16_t quotient = (remainder / divisor);
-      remainder = (remainder % divisor);
-      xMin += 6;
-      // Go through the sprite pixels to be drawn
-      for (uint8_t py = yMin; py <= yMax; ++py)   {
-        for (uint8_t px = 0; px < 4; ++px)   {
-
-          // Calculate the colour offset
-          size_t colourIndex = (px + (6 * quotient) + ((py - 8) * screenWidth));
-
-          // Pick the pixel colour from the spritesheet
-          uint16_t colour = spritesheet[colourIndex];
-
-          // If it is not the transparency colour
-          if (colour == sRed)     {
-            // Calculate the colour offset
-            size_t bufferIndex = (xMin + px + ((py - sliceY) * screenWidth));
-            // Copy the colour code into the rendering buffer
-            buffer[bufferIndex] = sBlack ;
-          }
-        }
-      }
+    uint8_t ymin = dy < sliceY ? sliceY : dy;
+    uint8_t ymax = dy + DigitHeight >= sliceY + sliceHeight ? sliceY + sliceHeight - 1 : dy + DigitHeight - 1;
+    // determines the memory address of the byte block to be copied
+    uint16_t * source = (uint16_t *)DIGIT_COLORMAP + digit * DigitWidth;
+    // determines the destination memory address in the framebuffer
+    uint16_t * dest = buffer + dx;
+    // the 16-bit color codes are copied byte by byte,
+    // so a factor of 2 is required here
+    uint8_t size = DigitWidth << 1;
+    // then each memory block is scanned
+    for (uint8_t py = ymin; py <= ymax; py++) {
+      // and copied to the framebuffer
+      memcpy(dest + (py - sliceY) * screenWidth, source + (py - dy) * DigitSheetWidth, size);
     }
   }
 }

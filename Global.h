@@ -21,7 +21,7 @@ constexpr uint16_t sBlack = 0x0000;
 // -------------------------------------------------------------------------
 
 int16_t  moveTick;
-int8_t  maxTick = 15;
+int8_t  maxTick = 8;
 uint16_t minHighscore;
 uint8_t animFrame = 0;
 bool catchGold = false;
@@ -40,7 +40,7 @@ uint16_t highScore = 0;
 uint8_t diverToShow = 0;
 uint8_t diverArmToShow = 0;
 uint8_t diverBagToShow = 0;
-bool debug = true;
+bool debug = false;
 // just for debug
 uint16_t oldVal;
 

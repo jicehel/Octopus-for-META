@@ -13,9 +13,13 @@ int octopus_leg3 = 1;
 bool octopus_leg3_reverse = false;
 int octopus_leg4 = 1;
 bool octopus_leg4_reverse = false;
-int velocita = 15;
+int velocita = 6;
 
 void Octopusleg() {
+
+  if (velocita > maxTick) velocita = maxTick;
+
+  // Active sprites of leg1
   if (octopus_leg1 == 1) {
     show_octopus_leg1_1 = false;
     show_octopus_leg1_2 = false;
@@ -43,7 +47,7 @@ void Octopusleg() {
     show_octopus_leg1_4 = true;
   }
 
-
+  // Active sprites of leg2
   if (octopus_leg2 == 1) {
     show_octopus_leg2_1 = false;
     show_octopus_leg2_2 = false;
@@ -82,7 +86,7 @@ void Octopusleg() {
     show_octopus_leg2_5 = true;
   }
 
-
+  // Active sprites of leg3
   if (octopus_leg3 == 1) {
     show_octopus_leg3_1 = false;
     show_octopus_leg3_2 = false;
@@ -110,6 +114,7 @@ void Octopusleg() {
     show_octopus_leg3_4 = true;
   }
 
+  // Active sprites of leg4
   if (octopus_leg4 == 1) {
     show_octopus_leg4_1 = false;
     show_octopus_leg4_2 = false;
