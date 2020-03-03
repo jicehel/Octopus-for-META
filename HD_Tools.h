@@ -1,5 +1,5 @@
-#ifndef PARACHUTE_HD_TOOLS
-#define PARACHUTE_HD_TOOLS
+#ifndef HD_TOOLS
+#define HD_TOOLS
 
 #include "Global.h"
 #include "Sprites.h"
@@ -43,7 +43,7 @@ void drawSprite(Sprite sprite, uint8_t sliceY, uint16_t* buffer) {
       for (px = xMin; px <= xmax; px++) {
         // Picks the pixel color from the spritesheet
         color = spritesheet[px + py * screenWidth];
-        // If color is different from the transparency color
+        // If color is the color selected for the Sprite
         if (color == sprite.color) {
           // Copies the color code into the rendering buffer
           buffer[px + (py - sliceY) * screenWidth] = sBlack;
@@ -83,7 +83,7 @@ void drawScore(uint16_t displayScore, uint8_t sliceY, uint16_t* buffer) {
   // the sprite and the current slice is not empty
   if (sliceY < 20 && sliceY + sliceHeight > 11 ) {
     // determines the boundaries of the sprite surface within the current slice
-    uint8_t  xMin = 12;
+    uint8_t  xMin = 102;
     uint8_t  yMin = (12 < sliceY) ? sliceY : 12;
     uint8_t  yMax = (19 >= sliceY + sliceHeight) ? sliceY + sliceHeight - 1 : 18;
     uint16_t color;
@@ -96,10 +96,10 @@ void drawScore(uint16_t displayScore, uint8_t sliceY, uint16_t* buffer) {
       xMin += 6;
       // Go through the sprite pixels to be drawn
       for (uint8_t py = yMin; py <= yMax; ++py)   {
-        for (uint8_t px = 1; px <= 5; ++px)   {
+        for (uint8_t px = 0; px < 4; ++px)   {
 
           // Calculate the colour offset
-          size_t colourIndex = (px + (6 * quotient) + ((py - 11) * screenWidth));
+          size_t colourIndex = (px + (6 * quotient) + ((py - 8) * screenWidth));
 
           // Pick the pixel colour from the spritesheet
           uint16_t colour = spritesheet[colourIndex];
@@ -145,36 +145,36 @@ void waitForPreviousDraw() {
 
 void drawBackground(const uint16_t * background, const Sprite spriteToDisplay, uint8_t spriteX, uint8_t spriteY, boolean displaySprite)
 {
-    constexpr size_t bufferSize = (sizeof(uint16_t) * screenWidth * sliceHeight);
+  constexpr size_t bufferSize = (sizeof(uint16_t) * screenWidth * sliceHeight);
 
-    for (uint8_t sliceIndex = 0; sliceIndex < slices; sliceIndex++)
-    {
-        // buffers are switched according to the parity of sliceIndex
-        uint16_t * buffer = (sliceIndex % 2 == 0) ? buffer1 : buffer2;
-        
-        // the top border of the current slice is calculated
-        uint8_t sliceY = sliceIndex * sliceHeight;
-        
-        size_t backgroundOffset = (sliceY * screenWidth);
+  for (uint8_t sliceIndex = 0; sliceIndex < slices; sliceIndex++)
+  {
+    // buffers are switched according to the parity of sliceIndex
+    uint16_t * buffer = (sliceIndex % 2 == 0) ? buffer1 : buffer2;
 
-        // starts by drawing the background
-        memcpy(buffer, &background[backgroundOffset], bufferSize);
+    // the top border of the current slice is calculated
+    uint8_t sliceY = sliceIndex * sliceHeight;
 
-       // and finally draws the sprite if needed
-        if (displaySprite == true) drawText(spriteToDisplay, sliceY, buffer, spriteX, spriteY);
+    size_t backgroundOffset = (sliceY * screenWidth);
 
-        // then we make sure that the sending of the previous buffer
-        // to the DMA controller has taken place
-        if (sliceIndex != 0)
-            waitForPreviousDraw();
-    
-        // after which we can then send the current buffer
-        customDrawBuffer(0, sliceY, buffer, screenWidth, sliceHeight);
-    }
+    // starts by drawing the background
+    memcpy(buffer, &background[backgroundOffset], bufferSize);
 
-    // always wait until the DMA transfer is completed
-    // for the last slice before entering the next cycle
-    waitForPreviousDraw();
+    // and finally draws the sprite if needed
+    if (displaySprite == true) drawText(spriteToDisplay, sliceY, buffer, spriteX, spriteY);
+
+    // then we make sure that the sending of the previous buffer
+    // to the DMA controller has taken place
+    if (sliceIndex != 0)
+      waitForPreviousDraw();
+
+    // after which we can then send the current buffer
+    customDrawBuffer(0, sliceY, buffer, screenWidth, sliceHeight);
+  }
+
+  // always wait until the DMA transfer is completed
+  // for the last slice before entering the next cycle
+  waitForPreviousDraw();
 }
 
 #endif

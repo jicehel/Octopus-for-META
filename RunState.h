@@ -1,7 +1,9 @@
 #ifndef RUNSTATE
 #define RUNSTATE
 
-#include "Animate.h"
+#include "BarcaSprite.h"
+#include "OctopusSprite.h"
+#include "SubSprite.h"
 
 // -------------------------------------------------------------------------
 // Run state
@@ -12,55 +14,99 @@ class RunState {
   public:
 
     void update() {
-      if (misses == 3) gameState = GameState::gameOver;
+      if (life == 0) {
+        gameState = GameState::gameOver;
+        if (score > highScore) {
+          highScore = score;
+        }
+      }
       else {
         // -------------------------------------------------------------------------
         // User interaction
         // -------------------------------------------------------------------------
 
-        if ((gb.buttons.pressed(BUTTON_LEFT)) && (player.spriteIndex > 0))  {
-          --player.spriteIndex;
-          gb.sound.playTick();
-        } else if ((gb.buttons.pressed(BUTTON_RIGHT)) && (player.spriteIndex < 2)) {
-          ++player.spriteIndex;
-          gb.sound.playTick();
-        }
+        moveTick++;
+
         if ((gb.buttons.released(BUTTON_A)) || (gb.buttons.released(BUTTON_B))) {
           gameState = GameState::pauseScreen;
-          gb.sound.play("pauseScreen.wav");
+          gb.sound.play("sons\Pause.wav");
         }
 
         // -------------------------------------------------------------------------
         // Anim objects
         // -------------------------------------------------------------------------
-
-        animateShark();
-        animateHelicopter();
-        animateParatrooper();       // Animate paratrooper
-        if (floodedAnimation > -2) animateFlooded(); // Animate Flooded if needed
-        if (moveTick > 0) {
-          --moveTick;
-        } else {
-          --spawnCount;
-          if ((spawnCount < 1) && (random(6 - (score / 200)) < 4)) {   // Check if we launch a new paratrooper
-            if (parachuteLaunchCount < 9) {
-              size_t spriteColumn = random(0, 3);
-              parachutes[parachuteLaunchCount] = firstSpriteColumn[spriteColumn];
-              ++parachuteLaunchCount;
-              spawnCount = spawnDelay - int(score / 60);
-              if (spawnCount < 2) spawnCount = 2;
-            }
+        if ((gb.buttons.pressed(BUTTON_LEFT)) && (catchGold == false) && (moveSubButton == true) && (hited==false)) {
+          if (subMove >= 2) {
+            // if sub don't have gold
+            --subMove;
+            gb.sound.playTick();
+          } else if (subGold == true && subMove >= 1) {
+            //if sub have gold
+            --subMove;
+            gb.sound.playTick();
           }
-          moveTick = speedMax - (score / 75);
+          
         }
-        if ((score > 0)  && (score % 500 == 0)) {
-          if (misses > 0) {
-            --misses;
-            gb.sound.play("Chance.wav");
-          }
-        }
-        RunState::draw();
       }
+
+      if ((gb.buttons.pressed(BUTTON_RIGHT)) && (catchGold == false) && (moveSubButton == true) && (hited==false)) {
+        if (subMove < 5 && subGold == false) {
+          ++subMove;
+          gb.sound.playTick();
+        } else if (subMove == 5 && subGold == false) {
+          catchGold = true;
+          subMove = 6;
+          gb.sound.playTick();
+        } else if (subMove == 5 && subGold == true) {
+          catchGold = true;
+          subMove = 6;
+          gb.sound.playTick();
+        } else if (subMove < 5 && subGold == true) {
+          ++subMove;
+          gb.sound.playTick();
+        }
+      }
+
+
+      if (subMove == 0 && subGold == true && inGold == false) {
+        inGold = true;
+      } else {
+        inGold = false;
+      }
+
+      if (subMove > 0 && life == 3 && subGold == false) {
+        barcaState = 1;
+      } else if (subMove == 0 && life == 3 && subGold == true) {
+        barcaState = 2;
+      } else if (subMove > 0 && life == 2 && subGold == false) {
+        barcaState = 4;
+      } else if (subMove == 0 && life == 2 && subGold == true) {
+        barcaState = 5;
+      } else if (subMove > 0 && life == 1 && subGold == false) {
+        barcaState = 7;
+      } else if (subMove == 0 && life == 1 && subGold == true) {
+        barcaState = 8;
+      }
+
+      if ((debug == true) && (subMove > 0) && (oldVal != subMove)) {
+        SerialUSB.print("11111 - Avant --");
+        SerialUSB.print("subMove = ");
+        SerialUSB.println(subMove);
+        SerialUSB.print("diverToShow = ");
+        SerialUSB.println(diverToShow);
+        oldVal = subMove;
+      }
+      Octopus();
+      Barca();
+      if (subMove < 6) {
+        Sub();
+      } else {
+        animSubGold();
+      }
+      OctopusCollision();
+      RunState::draw();
+
+      if (moveTick > maxTick) moveTick = 0;
     }
 
 
@@ -79,41 +125,42 @@ class RunState {
         // Starts by drawing the background
         memcpy(buffer, background + sliceY * screenWidth, 2 * screenWidth * sliceHeight);
 
-        // then draws helicopter (a static sprite)
-        drawSprite(helicopter, sliceY, buffer);
 
-        // then draw blades
-        if ((helicopterAnimation == 1) || (helicopterAnimation == 3)) {
-          drawSprite(blades[0], sliceY, buffer);
-          drawSprite(blades[1], sliceY, buffer);
-        }
-        if (helicopterAnimation == 2) {
-          drawSprite(blades[2], sliceY, buffer);
-          drawSprite(blades[3], sliceY, buffer);
-        }
+        // draw divers on barca
+        if (show_SpriteDiver1)drawSprite(spriteDiver1, sliceY, buffer);
+        if (show_SpriteDiver1_arm1)drawSprite(spriteDiver1_arm1, sliceY, buffer);
+        if (show_SpriteDiver1_arm2)drawSprite(spriteDiver1_arm2, sliceY, buffer);
+        if (show_SpriteDiver2)drawSprite(spriteDiver2, sliceY, buffer);
+        if (show_SpriteDiver3)drawSprite(spriteDiver3, sliceY, buffer);
 
-        if (misses > 0) {
-          drawSprite(miss[0], sliceY, buffer);
-          drawSprite(miss[1], sliceY, buffer);
-          if (misses > 1) {
-            drawSprite(miss[2], sliceY, buffer);
-            if (misses > 2) {
-              drawSprite(miss[3], sliceY, buffer);
-            }
-          }
-        }
+        // draw octopus leg 1
+        if (show_octopus_leg1_1)drawSprite(spriteOctopus_leg1_1, sliceY, buffer);
+        if (show_octopus_leg1_2)drawSprite(spriteOctopus_leg1_2, sliceY, buffer);
+        if (show_octopus_leg1_3)drawSprite(spriteOctopus_leg1_3, sliceY, buffer);
+        if (show_octopus_leg1_4)drawSprite(spriteOctopus_leg1_4, sliceY, buffer);
 
-        // Draw parachutes
-        for (uint8_t count = 0 ; count < parachuteLaunchCount ; count++) drawSprite(para[parachutes[count]], sliceY, buffer);
+        // draw octopus leg 2
+        if (show_octopus_leg2_1)drawSprite(spriteOctopus_leg2_1, sliceY, buffer);
+        if (show_octopus_leg2_2)drawSprite(spriteOctopus_leg2_2, sliceY, buffer);
+        if (show_octopus_leg2_3)drawSprite(spriteOctopus_leg2_3, sliceY, buffer);
+        if (show_octopus_leg2_4)drawSprite(spriteOctopus_leg2_4, sliceY, buffer);
+        if (show_octopus_leg2_5)drawSprite(spriteOctopus_leg2_5, sliceY, buffer);
 
-        // Draw flooded
-        if ((floodedAnimation > -1) && (floodedAnimation < 6)) drawSprite(flooded[floodedAnimation], sliceY, buffer);
+        // draw octopus leg 3
+        if (show_octopus_leg3_1)drawSprite(spriteOctopus_leg3_1, sliceY, buffer);
+        if (show_octopus_leg3_2)drawSprite(spriteOctopus_leg3_2, sliceY, buffer);
+        if (show_octopus_leg3_3)drawSprite(spriteOctopus_leg3_3, sliceY, buffer);
+        if (show_octopus_leg3_4)drawSprite(spriteOctopus_leg3_4, sliceY, buffer);
 
-        // Draw shark if needed
-        if ((sharkAnimation > -1) && (floodedAnimation < 6)) drawSprite(shark[sharkAnimation], sliceY, buffer);
+        // draw octopus leg 4
+        if (show_octopus_leg4_1)drawSprite(spriteOctopus_leg4_1, sliceY, buffer);
+        if (show_octopus_leg4_2)drawSprite(spriteOctopus_leg4_2, sliceY, buffer);
+        if (show_octopus_leg4_3)drawSprite(spriteOctopus_leg4_3, sliceY, buffer);
 
-        // Draws the boat of the player
-        drawSprite(boat[player.spriteIndex], sliceY, buffer);
+        // draw the 3 parts of the diver if needed
+        if (diverToShow > 0) drawSprite(diver[diverToShow - 1], sliceY, buffer);
+        if (diverArmToShow > 0) drawSprite(diverArm[diverArmToShow - 1], sliceY, buffer);
+        if (diverBagToShow > 0) drawSprite(diverBag[diverBagToShow - 1], sliceY, buffer);
 
         // Draw score
         drawScore(score, sliceY, buffer);

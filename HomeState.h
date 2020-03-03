@@ -1,5 +1,8 @@
-#ifndef PARACHUTE_HOMESTATE
-#define PARACHUTE_HOMESTATE
+#ifndef OCTOPUS_HOMESTATE
+#define OCTOPUS_HOMESTATE
+
+#include "Global.h"
+#include "Sprites.h"
 
 // -------------------------------------------------------------------------
 // Home state
@@ -27,20 +30,20 @@ class HomeState {
       gb.lights.fill(BLACK);
       gameState = GameState::run;
       gb.sound.playTick();
-      misses = 0;
+      animFrame = 0;
+      catchGold = false;
+      inGold = false;
       score = 0;
-      player.spriteIndex = 0;
-      spawnDelay = 4;       // Delay before next possibility to launch a para
-      sharkAnimation = -2;
-      floodedAnimation = -2;
-      speedMax = 25;   // Number of cycles before update
-      helicopterAnimation = 0;
-      player.spriteIndex = 0;
-      speedBlades = 5;
-      moveTick = speedMax;
-      spawnCount = spawnDelay;
-      parachuteLaunchCount = 0;
-      for (auto &value : parachutes) value = -1;
+      getPoint = 0;
+      life = 3;
+      bool hited = false;
+      subGold = false;
+      subMove = 0;
+      barcaState = 0;
+      moveSubButton = true;
+      dieFrame = 0;
+      endGame = false;
+      hited = false;
     }
 
     // -------------------------------------------------------------------------
@@ -49,7 +52,7 @@ class HomeState {
 
     void draw()    {
 
-      drawBackground(splachScreen, spriteGameOver, 0, 0, false);  
+      drawBackground(splachScreen, spriteGameOver, 0, 0, false);
 
     }
 };
@@ -57,7 +60,3 @@ class HomeState {
 HomeState homeState;
 
 #endif
-
-
-
-

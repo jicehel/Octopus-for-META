@@ -1,5 +1,5 @@
-#ifndef PARACHUTE_GAMEOVERSTATE
-#define PARACHUTE_GAMEOVERSTATE
+#ifndef OCTOPUS_GAMEOVERSTATE
+#define OCTOPUS_GAMEOVERSTATE
 
 // -------------------------------------------------------------------------
 // Game Over state
@@ -13,7 +13,7 @@ class GameOverState {
       if ((gb.buttons.released(BUTTON_A)) || (gb.buttons.released(BUTTON_B))) {
         gameState = GameState::home;
         gb.sound.play("gameOver.wav");
-      } 
+      }
     }
 
 
@@ -23,8 +23,8 @@ class GameOverState {
 
     void draw()    {
 
-      drawBackground(background, spriteGameOver, 53, 60, true);  
-    
+      drawBackground(background, spriteGameOver, 53, 60, true);
+
     }
 };
 

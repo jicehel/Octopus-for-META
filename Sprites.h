@@ -15,88 +15,81 @@
 // -------------------------------------------------------------------------
 
 struct Sprite {
-    uint8_t  x;      // the horizontal coordinate of the sprite on the spritesheet
-    uint8_t  y;      // the vertical coordinate of the sprite on the spritesheet
-    uint8_t  w;  // the width of the sprite
-    uint8_t  h; // the height of the sprite
-    uint16_t color;  // the color assigned to it on the spritesheet
+  uint8_t  x;     // the horizontal coordinate of the sprite on the spritesheet
+  uint8_t  y;     // the vertical coordinate of the sprite on the spritesheet
+  uint8_t  w;     // the width of the sprite
+  uint8_t  h;     // the height of the sprite
+  uint16_t color; // the color assigned to it on the spritesheet
 };
 
 
-// a static sprite for the Helicopter
-constexpr Sprite helicopter = { 125, 5, 30, 25, sRed };
+// a static sprite for "Appuyer sur A"
+constexpr Sprite PressAText = { 58, 11, 74, 10, sRed };
 
-// Sprites of the blades of the Helicopter
-constexpr Sprite blades[] = {
-  { 120,  6,  9, 1, sGreen },  //  0
-  { 132,  6,  9, 1, sGreen },  //  1
-  { 135, 10,  9, 1, sGreen },  //  2
-  { 147, 10,  9, 1, sGreen }   //  3
+// the sprites of the divers in the baca
+constexpr Sprite spriteDiver1      = { 11,  3, 14, 18, sBlack  };
+constexpr Sprite spriteDiver1_arm1 = { 23, 16,  2,  4, sGreen  };
+constexpr Sprite spriteDiver1_arm2 = { 23,  6,  9, 13, sRed    };
+constexpr Sprite spriteDiver2      = { 33,  3, 11, 17, sBlack  };
+constexpr Sprite spriteDiver3      = { 45,  3, 11, 17, sBlack  };
+
+// the sprite of the Diver diving
+constexpr Sprite diver[] = {
+  { 11, 30, 24, 24, sBlack },  //  0
+  { 14, 72, 20, 28, sBlack },  //  1
+  { 48, 89, 19, 29, sBlack },  //  2
+  { 77, 90, 20, 28, sBlack },  //  3
+  {107, 94, 19, 27, sBlack },  //  4
+  { 82, 59, 14, 17, sGreen },  //  5
 };
 
-// the different postures and positions of the player's avatar
-constexpr Sprite boat[] = {
-  { 16, 80,  27, 20, sGreen },  //  0
-  { 47, 80,  28, 24, sRed   },  //  1
-  { 79, 80,  31, 19, sGreen }   //  2
+// the sprite of the Diver arm
+constexpr Sprite diverArm[] = {
+  { 123, 108, 8, 6,  sRed },   //  0
+  { 121, 108, 4, 9, sPink },   //  1
+  { 111, 17,  4, 4,  sRed },   //  2
+  {  91, 78,  4, 9, sGreen},   //  3
+  {  87, 75,  6, 11, sRed },   //  4
 };
 
-// the misses sprites
-constexpr Sprite miss[] = {
-  { 120, 86,  22,  7, sRed  },  //  0
-  { 117, 95,  13, 11, sRed  },  //  1
-  { 131, 95,  13, 11, sRed  },  //  2
-  { 145, 95,  13, 11, sRed  }   //  3
+// the sprite of the Diver bag
+constexpr Sprite diverBag[] = {
+  { 94, 108,  5, 10, sRed  },  //  0
+  { 63, 109,  6,  9, sRed  },  //  1
+  { 29,  93,  5,  8, sRed  },  //  2
+  { 32,  43,  6, 10, sRed  },  //  3
+  {102, 107,  8,  9, sPink },  //  4
+  {104, 68,  7, 12, sGreen },  //  5
+  {104, 64,  7, 20,  sRed  },  //  6
 };
 
-// the sprites of the flooded 
-constexpr Sprite flooded[] = {
-  { 88 , 103,  20, 10, sRed   },  //  0
-  { 56 , 103,  21, 11, sGreen },  //  1
-  { 26 , 102,  20, 12, sRed   },  //  2
-  { 46 , 115,  13,  8, sRed   },  //  3
-  { 74 , 113,  13,  9, sRed   },  //  4
-  { 116, 109,  12, 14, sRed   }   //  5
-};
+// the sprite of the Octopus legs
+constexpr Sprite spriteOctopus_leg1_1 = { 56,  40, 19, 10, sPink };
+constexpr Sprite spriteOctopus_leg1_2 = { 52,  51, 11,  4, sRed  };
+constexpr Sprite spriteOctopus_leg1_3 = { 48,  56, 10,  9, sPink };
+constexpr Sprite spriteOctopus_leg1_4 = { 36,  64, 19, 19, sRed  };
 
-// the sprites of the shark
-constexpr Sprite shark[] = {
-  { 79 , 106,  7 ,  6, sRed   },  //  0
-  { 47 , 106,  7 ,  6, sRed   },  //  1
-  { 32 , 116,  6 ,  6, sRed   },  //  2
-  { 60 , 115,  7 ,  7, sRed   },  //  3
-  { 89 , 107,  25, 16, sGreen }   //  4
-};
+constexpr Sprite spriteOctopus_leg2_1 = { 73,  52, 17, 11, sRed  };
+constexpr Sprite spriteOctopus_leg2_2 = { 72,  62,  9, 13, sPink };
+constexpr Sprite spriteOctopus_leg2_3 = { 71,  69,  7, 13, sRed  };
+constexpr Sprite spriteOctopus_leg2_4 = { 71,  79,  6, 11, sPink };
+constexpr Sprite spriteOctopus_leg2_5 = { 66,  86,  7, 12, sRed  };
+
+constexpr Sprite spriteOctopus_leg3_1 = { 95,  66,  9,  9, sPink  };
+constexpr Sprite spriteOctopus_leg3_2 = { 96,  73,  7,  9, sBlack };
+constexpr Sprite spriteOctopus_leg3_3 = { 99,  79,  5, 10, sPink  };
+constexpr Sprite spriteOctopus_leg3_4 = { 99,  87,  6, 14, sGreen  };
+
+constexpr Sprite spriteOctopus_leg4_1 = { 118,  74,  6,  7, sRed   };
+constexpr Sprite spriteOctopus_leg4_2 = { 117,  80,  8,  8, sBlack };
+constexpr Sprite spriteOctopus_leg4_3 = { 119,  88, 12, 13, sGreen };
 
 // the sprite pauseScreen
-constexpr Sprite spritepauseScreen = { 1, 9, 28, 7, sRed  };
+constexpr Sprite spritepauseScreen = { 58, 0, 42, 10, sRed  };
 
 // the sprite Game Over
-constexpr Sprite spriteGameOver = { 1, 17, 53, 7, sRed  };
+constexpr Sprite spriteGameOver = { 70, 31, 67, 8, sRed  };
 
-// the sprites of the para
-constexpr Sprite para[] = {
-  // col 1
-  { 106,  5,  9, 13, sRed   },  //  0
-  {  90,  8, 14, 14, sGreen },  //  1
-  {  76,  8, 15, 21, sRed   },  //  2
-  {  63, 14, 11, 25, sGreen },  //  3
-  {  48, 33, 15, 22, sRed   },  //  4
-  {  36, 52, 18, 22, sGreen },  //  5
-  {  28, 72, 19, 22, sRed   },  //  6
-  // col 2
-  { 112, 19,  10, 12, sRed   },  //  7
-  { 100, 17,  15, 14, sGreen },  //  8
-  {  89, 18,  11, 27, sRed   },  //  9
-  {  74, 32,  15, 23, sGreen },  //  10
-  {  64, 48,  17, 24, sRed   },  //  11
-  {  59, 72,  19, 22, sGreen },  //  12
-  // col 3
-  { 124, 30,  10, 11, sRed   },  //  13
-  { 114, 28,  11, 18, sGreen },  //  14
-  { 100, 32,  14, 21, sRed   },  //  15
-  {  92, 49,  18, 23, sGreen },  //  16
-  {  93, 72,  18, 22, sRed   }   //  17
-};
+
 
 #endif

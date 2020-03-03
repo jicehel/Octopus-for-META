@@ -1,6 +1,6 @@
 #pragma once
-#ifndef PARACHUTE_GLOBAL
-#define PARACHUTE_GLOBAL
+#ifndef OCTOPUS_GLOBAL
+#define OCTOPUS_GLOBAL
 
 // -------------------------------------------------------------------------
 // Global constants
@@ -13,29 +13,66 @@ constexpr uint8_t  slices = screenHeight / sliceHeight; // Number of horizontal 
 constexpr uint16_t transColor   = 0xdfff;
 constexpr uint16_t sRed   = 0x00f8;
 constexpr uint16_t sGreen = 0xe007;
+constexpr uint16_t sPink  = 0x1ff8;
 constexpr uint16_t sBlack = 0x0000;
-
-// Define value of the first sprite of each column of paachutiste
-constexpr uint8_t  firstSpriteColumn[] { 0, 7, 13,17 };
-
 
 // -------------------------------------------------------------------------
 // Define global variables
 // -------------------------------------------------------------------------
 
-uint16_t score;
-uint16_t minHighscore;
-int16_t  misses;
 int16_t  moveTick;
-int16_t  spawnDelay;
-int8_t   spawnCount;
-int8_t   speedMax;
-uint8_t  parachuteLaunchCount;
-int8_t   parachutes[10];
-int8_t   helicopterAnimation;
-int8_t   sharkAnimation;
-int8_t   floodedAnimation;
-uint8_t  speedBlades;
+int8_t  maxTick = 15;
+uint16_t minHighscore;
+uint8_t animFrame = 0;
+bool catchGold = false;
+bool hited = false;
+bool inGold = false;
+uint16_t score = 0;
+uint16_t getPoint = 0;
+uint8_t life = 3;
+bool subGold = false;
+uint8_t subMove = 0;
+uint8_t barcaState = 0;
+bool moveSubButton = true;
+uint8_t dieFrame = 0;
+bool endGame = false;
+uint16_t highScore = 0;
+uint8_t diverToShow = 0;
+uint8_t diverArmToShow = 0;
+uint8_t diverBagToShow = 0;
+bool debug = true;
+// just for debug
+uint16_t oldVal;
+
+// -------------------------------------------------------------------------
+// Sprite visibility
+// -------------------------------------------------------------------------
+
+bool show_SpriteDiver1 = false;
+bool show_SpriteDiver1_arm1 = false;
+bool show_SpriteDiver1_arm2 = false;
+bool show_SpriteDiver2 = false;
+bool show_SpriteDiver3 = false;
+
+bool show_octopus_leg1_1 = false;
+bool show_octopus_leg1_2 = false;
+bool show_octopus_leg1_3 = false;
+bool show_octopus_leg1_4 = false;
+
+bool show_octopus_leg2_1 = false;
+bool show_octopus_leg2_2 = false;
+bool show_octopus_leg2_3 = false;
+bool show_octopus_leg2_4 = false;
+bool show_octopus_leg2_5 = false;
+
+bool show_octopus_leg3_1 = false;
+bool show_octopus_leg3_2 = false;
+bool show_octopus_leg3_3 = false;
+bool show_octopus_leg3_4 = false;
+
+bool show_octopus_leg4_1 = false;
+bool show_octopus_leg4_2 = false;
+bool show_octopus_leg4_3 = false;
 
 // -------------------------------------------------------------------------
 // All possible game state
@@ -49,17 +86,5 @@ enum class GameState : uint8_t {
 };
 
 GameState gameState {GameState::home};
-
-// -------------------------------------------------------------------------
-// Player definition
-// -------------------------------------------------------------------------
-
-struct Player {
-  uint8_t  spriteIndex;
-};
-
-Player player = {
-  0      // spriteIndex 0, the position at the left
-};
 
 #endif

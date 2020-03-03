@@ -1,5 +1,5 @@
-#ifndef PARACHUTE_PAUSESTATE
-#define PARACHUTE_HD_PAUSESTATE
+#ifndef OCTOPUS_PAUSESTATE
+#define OCTOPUS_PAUSESTATE
 
 
 // -------------------------------------------------------------------------
@@ -27,8 +27,8 @@ class PauseState {
 
     void draw()    {
 
-      drawBackground(background, spritepauseScreen, 66, 60, true);    
-  
+      drawBackground(background, spritepauseScreen, 66, 60, true);
+
     }
 };
 
