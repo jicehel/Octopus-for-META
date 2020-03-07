@@ -54,25 +54,52 @@ bool show_SpriteDiver1_arm2 = false;
 bool show_SpriteDiver2 = false;
 bool show_SpriteDiver3 = false;
 
-bool show_octopus_leg1_1 = false;
-bool show_octopus_leg1_2 = false;
-bool show_octopus_leg1_3 = false;
-bool show_octopus_leg1_4 = false;
+// legs animation markers
+uint8_t octopus_leg[] = {1,1,1,1,1,};
 
-bool show_octopus_leg2_1 = false;
-bool show_octopus_leg2_2 = false;
-bool show_octopus_leg2_3 = false;
-bool show_octopus_leg2_4 = false;
-bool show_octopus_leg2_5 = false;
+// legs lengths
+const uint8_t octopus_leg_length[] = {0,4,5,4,3,};
 
-bool show_octopus_leg3_1 = false;
-bool show_octopus_leg3_2 = false;
-bool show_octopus_leg3_3 = false;
-bool show_octopus_leg3_4 = false;
+bool show_octopus_leg1[4];
+constexpr bool show_octopus_leg1_settings[5][4]
+{
+  { false, false, false, false, },
+  { true, false, false, false, },
+  { true, true, false, false, },
+  { true, true, true, false, },
+  { true, true, true, true, },
+};
 
-bool show_octopus_leg4_1 = false;
-bool show_octopus_leg4_2 = false;
-bool show_octopus_leg4_3 = false;
+bool show_octopus_leg2[5];
+constexpr bool show_octopus_leg2_settings[6][5]
+{
+  { false, false, false, false, false,},
+  { true, false, false, false, false, },
+  { true, true, false, false, false, },
+  { true, true, true, false, false, },
+  { true, true, true, true, false,},
+  { true, true, true, true, true,},
+};
+
+bool show_octopus_leg3[4];
+constexpr bool show_octopus_leg3_settings[5][4]
+{
+  { false, false, false, false, },
+  { true, false, false, false, },
+  { true, true, false, false, },
+  { true, true, true, false, },
+  { true, true, true, true, },
+};
+
+bool show_octopus_leg4[3];
+constexpr bool show_octopus_leg4_settings[4][3]
+{
+  { false, false, false, },
+  { true, false, false, },
+  { true, true, false, },
+  { true, true, true, },
+};
+
 
 // -------------------------------------------------------------------------
 // All possible game state

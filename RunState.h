@@ -4,6 +4,7 @@
 #include "BarcaSprite.h"
 #include "OctopusSprite.h"
 #include "SubSprite.h"
+#include "Global.h"
 
 // -------------------------------------------------------------------------
 // Run state
@@ -35,7 +36,7 @@ class RunState {
         // -------------------------------------------------------------------------
         // Anim objects
         // -------------------------------------------------------------------------
-        if ((gb.buttons.pressed(BUTTON_LEFT)) && (catchGold == false) && (moveSubButton == true) && (hited==false)) {
+        if ((gb.buttons.pressed(BUTTON_LEFT)) && (catchGold == false) && (moveSubButton == true) && (hited == false)) {
           if (subMove >= 2) {
             // if sub don't have gold
             --subMove;
@@ -45,11 +46,11 @@ class RunState {
             --subMove;
             gb.sound.playTick();
           }
-          
+
         }
       }
 
-      if ((gb.buttons.pressed(BUTTON_RIGHT)) && (catchGold == false) && (moveSubButton == true) && (hited==false)) {
+      if ((gb.buttons.pressed(BUTTON_RIGHT)) && (catchGold == false) && (moveSubButton == true) && (hited == false)) {
         if (subMove < 5 && subGold == false) {
           ++subMove;
           gb.sound.playTick();
@@ -109,6 +110,15 @@ class RunState {
       if (moveTick > maxTick) moveTick = 0;
     }
 
+    template< size_t size >
+    void extractDigits(uint8_t (&buffer)[size], uint16_t value) {
+
+      for (uint8_t i = 0; i < size; ++i) {
+        buffer[i] = value % 10;
+        value /= 10;
+      }
+    }
+
 
     void draw() {
       // Declares a pointer that will alternate between the two memory buffers
@@ -133,44 +143,31 @@ class RunState {
         if (show_SpriteDiver2)drawSprite(spriteDiver2, sliceY, buffer);
         if (show_SpriteDiver3)drawSprite(spriteDiver3, sliceY, buffer);
 
-        // draw octopus leg 1
-        if (show_octopus_leg1_1)drawSprite(spriteOctopus_leg1_1, sliceY, buffer);
-        if (show_octopus_leg1_2)drawSprite(spriteOctopus_leg1_2, sliceY, buffer);
-        if (show_octopus_leg1_3)drawSprite(spriteOctopus_leg1_3, sliceY, buffer);
-        if (show_octopus_leg1_4)drawSprite(spriteOctopus_leg1_4, sliceY, buffer);
 
-        // draw octopus leg 2
-        if (show_octopus_leg2_1)drawSprite(spriteOctopus_leg2_1, sliceY, buffer);
-        if (show_octopus_leg2_2)drawSprite(spriteOctopus_leg2_2, sliceY, buffer);
-        if (show_octopus_leg2_3)drawSprite(spriteOctopus_leg2_3, sliceY, buffer);
-        if (show_octopus_leg2_4)drawSprite(spriteOctopus_leg2_4, sliceY, buffer);
-        if (show_octopus_leg2_5)drawSprite(spriteOctopus_leg2_5, sliceY, buffer);
-
-        // draw octopus leg 3
-        if (show_octopus_leg3_1)drawSprite(spriteOctopus_leg3_1, sliceY, buffer);
-        if (show_octopus_leg3_2)drawSprite(spriteOctopus_leg3_2, sliceY, buffer);
-        if (show_octopus_leg3_3)drawSprite(spriteOctopus_leg3_3, sliceY, buffer);
-        if (show_octopus_leg3_4)drawSprite(spriteOctopus_leg3_4, sliceY, buffer);
-
-        // draw octopus leg 4
-        if (show_octopus_leg4_1)drawSprite(spriteOctopus_leg4_1, sliceY, buffer);
-        if (show_octopus_leg4_2)drawSprite(spriteOctopus_leg4_2, sliceY, buffer);
-        if (show_octopus_leg4_3)drawSprite(spriteOctopus_leg4_3, sliceY, buffer);
-
-        // draw the 3 parts of the diver if needed
-        if (diverToShow > 0) drawSprite(diver[diverToShow - 1], sliceY, buffer);
-        if (diverArmToShow > 0) drawSprite(diverArm[diverArmToShow - 1], sliceY, buffer);
-        if (diverBagToShow > 0) drawSprite(diverBag[diverBagToShow - 1], sliceY, buffer);
+        for (size_t index_leg = 1; index_leg < 5; ++index_leg) {
+          if ((octopus_leg[index_leg] > 0) && (octopus_leg[index_leg]  < (octopus_leg_length[index_leg] + 1))) {
+            for (size_t index = 0; index < (octopus_leg_length[index_leg]); ++index) {
+              if (index_leg == 1) {
+                if (show_octopus_leg1[index])drawSprite(spriteOctopus_leg1[index], sliceY, buffer);
+              } else if (index_leg == 2) {
+                if (show_octopus_leg2[index])drawSprite(spriteOctopus_leg2[index], sliceY, buffer);
+              } else if (index_leg == 3) {
+                if (show_octopus_leg3[index])drawSprite(spriteOctopus_leg3[index], sliceY, buffer);
+              } else if (index_leg == 4) {
+                if (show_octopus_leg4[index])drawSprite(spriteOctopus_leg4[index], sliceY, buffer);
+              }
+            }
+          }
+        }
 
         // Draw score
-                
-        // the number that represents the value to be displayed
-        // will be decomposed into digits, and each digit will be
-        // displayed as a simple sprite
-        String   s = String(score);
-        uint8_t  n = s.length();
-        for (uint8_t i = 0; i < n; i++) drawDigitOnSlice(s.charAt(i) - '0', n - i - 1, sliceY, buffer);
-        
+
+        uint8_t digits[6] = {};
+        extractDigits(digits, score);
+
+        for (uint8_t i = 0; i < 6; i++)
+          drawDigitOnSlice(digits[6 - i], 6 - i - 1, sliceY, buffer);
+
 
         // Verify that previous buffer has been sent to the DMA controller
         if (sliceIndex != 0) waitForPreviousDraw();

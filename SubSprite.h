@@ -5,10 +5,8 @@ byte frameSub = 0;
 
 void die() {
   moveSubButton = false;
-  show_octopus_leg3_1 = true;
-  show_octopus_leg3_2 = true;
-  show_octopus_leg3_3 = true;
-  show_octopus_leg3_4 = true;
+  for(size_t index = 0; index < 4; ++index)
+      show_octopus_leg3[index] = true;
   diverToShow = 6;
   if ((frameSub == 0) || (frameSub == 2) || (frameSub == 4) || (frameSub == 6)) {
     diverArmToShow = 4;
@@ -40,7 +38,7 @@ void animSubGold() {
     if (animFrame == 3) {
       ++score;
       ++getPoint;
-      gb.sound.play("OR.WAV");
+      // gb.sound.play("OR.WAV");
       subGold = true;
       subMove = 5;
       animFrame = 1;
@@ -65,7 +63,7 @@ void animSubGold() {
     if (animFrame == 3) {
       ++score;
       ++getPoint;
-      gb.sound.play("OR.WAV");
+      // gb.sound.play("OR.WAV");
       subGold = true;
       subMove = 5;
       animFrame = 0;
@@ -190,7 +188,6 @@ void Sub() {
     }
   }
 }
-
 
 
 #endif
