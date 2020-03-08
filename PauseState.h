@@ -27,7 +27,7 @@ class PauseState {
 
     void draw()    {
 
-      drawBackground(background, spritepauseScreen, 66, 60, true);
+      drawBackground(background, spritePauseScreen, 66, 60, true);
 
     }
 };

@@ -30,7 +30,8 @@ class RunState {
 
         if ((gb.buttons.released(BUTTON_A)) || (gb.buttons.released(BUTTON_B))) {
           gameState = GameState::pauseScreen;
-          gb.sound.play("sons\Pause.wav");
+          // gb.sound.play("sons\Pause.wav");
+          gb.sound.playCancel();
         }
 
         // -------------------------------------------------------------------------
@@ -89,13 +90,22 @@ class RunState {
         barcaState = 8;
       }
 
-      if ((debug == true) && (subMove > 0) && (oldVal != subMove)) {
-        SerialUSB.print("11111 - Avant --");
-        SerialUSB.print("subMove = ");
-        SerialUSB.println(subMove);
-        SerialUSB.print("diverToShow = ");
-        SerialUSB.println(diverToShow);
-        oldVal = subMove;
+      // if ((debug == true) && (subMove > 0) && (oldVal != subMove)) {
+      if ((debug == true) && (subMove > 0)) {
+        // SerialUSB.print("11111 - Avant --");
+        // SerialUSB.print("subMove = ");
+        // SerialUSB.println(subMove);
+        // SerialUSB.print("diverToShow = ");
+        // SerialUSB.println(diverToShow);
+        // oldVal = subMove;
+        SerialUSB.print("MoveTick :");
+        SerialUSB.print(moveTick);
+        SerialUSB.print("  -  ");
+        SerialUSB.print("MaxTick :");
+        SerialUSB.print(maxTick);
+        SerialUSB.print("  -  ");
+        SerialUSB.print("animFrame :");
+        SerialUSB.println(animFrame);
       }
       Octopus();
       Barca();
@@ -137,36 +147,43 @@ class RunState {
 
 
         // draw divers on barca
-        if (show_SpriteDiver1)drawSprite(spriteDiver1, sliceY, buffer);
-        if (show_SpriteDiver1_arm1)drawSprite(spriteDiver1_arm1, sliceY, buffer);
-        if (show_SpriteDiver1_arm2)drawSprite(spriteDiver1_arm2, sliceY, buffer);
-        if (show_SpriteDiver2)drawSprite(spriteDiver2, sliceY, buffer);
-        if (show_SpriteDiver3)drawSprite(spriteDiver3, sliceY, buffer);
+        if (showSpriteDiver1)drawSprite(spriteDiver1, sliceY, buffer);
+        if (showSpriteDiver1Arm1)drawSprite(spriteDiver1Arm1, sliceY, buffer);
+        if (showSpriteDiver1Arm2)drawSprite(spriteDiver1Arm2, sliceY, buffer);
+        if (showSpriteDiver2)drawSprite(spriteDiver2, sliceY, buffer);
+        if (showSpriteDiver3)drawSprite(spriteDiver3, sliceY, buffer);
 
 
-        for (size_t index_leg = 1; index_leg < 5; ++index_leg) {
-          if ((octopus_leg[index_leg] > 0) && (octopus_leg[index_leg]  < (octopus_leg_length[index_leg] + 1))) {
-            for (size_t index = 0; index < (octopus_leg_length[index_leg]); ++index) {
-              if (index_leg == 1) {
-                if (show_octopus_leg1[index])drawSprite(spriteOctopus_leg1[index], sliceY, buffer);
-              } else if (index_leg == 2) {
-                if (show_octopus_leg2[index])drawSprite(spriteOctopus_leg2[index], sliceY, buffer);
-              } else if (index_leg == 3) {
-                if (show_octopus_leg3[index])drawSprite(spriteOctopus_leg3[index], sliceY, buffer);
-              } else if (index_leg == 4) {
-                if (show_octopus_leg4[index])drawSprite(spriteOctopus_leg4[index], sliceY, buffer);
+        // draw the 3 parts of the diver if needed
+        if (diverToShow > 0) drawSprite(diver[diverToShow - 1], sliceY, buffer);
+        if (diverArmToShow > 0) drawSprite(diverArm[diverArmToShow - 1], sliceY, buffer);
+        if (diverBagToShow > 0) drawSprite(diverBag[diverBagToShow - 1], sliceY, buffer);
+
+
+        // draw octopus legs
+        for (size_t indexLeg = 1; indexLeg < 5; ++indexLeg) {
+          if ((octopusLeg[indexLeg] > 0) && (octopusLeg[indexLeg]  < (octopusLegLength[indexLeg] + 1))) {
+            for (size_t index = 0; index < (octopusLegLength[indexLeg]); ++index) {
+              if (indexLeg == 1) {
+                if (showOctopusLeg1[index])drawSprite(spriteOctopusLeg1[index], sliceY, buffer);
+              } else if (indexLeg == 2) {
+                if (showOctopusLeg2[index])drawSprite(spriteOctopusLeg2[index], sliceY, buffer);
+              } else if (indexLeg == 3) {
+                if (showOctopusLeg3[index])drawSprite(spriteOctopusLeg3[index], sliceY, buffer);
+              } else if (indexLeg == 4) {
+                if (showOctopusLeg4[index])drawSprite(spriteOctopusLeg4[index], sliceY, buffer);
               }
             }
           }
         }
 
+
         // Draw score
-
-        uint8_t digits[6] = {};
+        const uint8_t nbDigits = 6;
+        uint8_t digits[nbDigits] = {};
         extractDigits(digits, score);
-
-        for (uint8_t i = 0; i < 6; i++)
-          drawDigitOnSlice(digits[6 - i], 6 - i - 1, sliceY, buffer);
+        for (uint8_t i = 0; i < nbDigits; i++)
+          drawDigitOnSlice(digits[nbDigits - i], nbDigits - i - 1, sliceY, buffer);
 
 
         // Verify that previous buffer has been sent to the DMA controller

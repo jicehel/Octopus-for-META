@@ -27,11 +27,11 @@ struct Sprite {
 constexpr Sprite PressAText = { 58, 11, 74, 10, sRed };
 
 // the sprites of the divers in the baca
-constexpr Sprite spriteDiver1      = { 11,  3, 14, 18, sBlack, };
-constexpr Sprite spriteDiver1_arm1 = { 23, 16,  2,  4, sGreen, };
-constexpr Sprite spriteDiver1_arm2 = { 23,  6,  9, 13, sRed,   };
-constexpr Sprite spriteDiver2      = { 33,  3, 11, 17, sBlack, };
-constexpr Sprite spriteDiver3      = { 45,  3, 11, 17, sBlack, };
+constexpr Sprite spriteDiver1     = { 11,  3, 14, 18, sBlack, };
+constexpr Sprite spriteDiver1Arm1 = { 23, 16,  2,  4, sGreen, };
+constexpr Sprite spriteDiver1Arm2 = { 23,  6,  9, 13, sRed,   };
+constexpr Sprite spriteDiver2     = { 33,  3, 11, 17, sBlack, };
+constexpr Sprite spriteDiver3     = { 45,  3, 11, 17, sBlack, };
 
 // the sprite of the Diver diving
 constexpr Sprite diver[] = {
@@ -67,7 +67,7 @@ constexpr Sprite diverBag[] = {
 
 // leg_1
 
-constexpr Sprite spriteOctopus_leg1[] = {
+constexpr Sprite spriteOctopusLeg1[] = {
   { 56,  40, 19, 10, sPink,},
   { 52,  51, 11,  4, sRed, },
   { 48,  56, 10,  9, sPink,},
@@ -77,7 +77,7 @@ constexpr Sprite spriteOctopus_leg1[] = {
 // space for leg_1 bis
 
 // leg_2
-constexpr Sprite spriteOctopus_leg2[] = {
+constexpr Sprite spriteOctopusLeg2[] = {
   { 73,  52, 17, 11, sRed, },
   { 72,  62,  9, 13, sPink,},
   { 71,  69,  7, 13, sRed, },
@@ -86,7 +86,7 @@ constexpr Sprite spriteOctopus_leg2[] = {
 };
 
 // leg_3
-constexpr Sprite spriteOctopus_leg3[] = {
+constexpr Sprite spriteOctopusLeg3[] = {
   { 95,  66,  9,  9, sPink,  },
   { 96,  73,  7,  9, sBlack, },
   { 99,  79,  5, 10, sPink,  },
@@ -94,14 +94,14 @@ constexpr Sprite spriteOctopus_leg3[] = {
 };
 
 // leg_4
-constexpr Sprite spriteOctopus_leg4[] = {
+constexpr Sprite spriteOctopusLeg4[] = {
   { 118,  74,  6,  7, sRed,   },
   { 117,  80,  8,  8, sBlack, },
   { 119,  88, 12, 13, sGreen, },
 };
 
 // the sprite pauseScreen
-constexpr Sprite spritepauseScreen = { 58, 0, 42, 10, sRed };
+constexpr Sprite spritePauseScreen = { 58, 0, 42, 10, sRed };
 
 // the sprite Game Over
 constexpr Sprite spriteGameOver = { 70, 31, 67, 8, sRed };

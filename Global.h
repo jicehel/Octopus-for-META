@@ -21,7 +21,7 @@ constexpr uint16_t sBlack = 0x0000;
 // -------------------------------------------------------------------------
 
 int16_t  moveTick;
-int8_t  maxTick = 8;
+int16_t  maxTick = 100;
 uint16_t minHighscore;
 uint8_t animFrame = 0;
 bool catchGold = false;
@@ -43,61 +43,63 @@ uint8_t diverBagToShow = 0;
 bool debug = false;
 // just for debug
 uint16_t oldVal;
+uint8_t speedAnim = 4;
 
 // -------------------------------------------------------------------------
 // Sprite visibility
 // -------------------------------------------------------------------------
 
-bool show_SpriteDiver1 = false;
-bool show_SpriteDiver1_arm1 = false;
-bool show_SpriteDiver1_arm2 = false;
-bool show_SpriteDiver2 = false;
-bool show_SpriteDiver3 = false;
+bool showSpriteDiver1 = false;
+bool showSpriteDiver1Arm1 = false;
+bool showSpriteDiver1Arm2 = false;
+bool showSpriteDiver2 = false;
+bool showSpriteDiver3 = false;
 
 // legs animation markers
-uint8_t octopus_leg[] = {1,1,1,1,1,};
+uint8_t octopusLeg[] = {1,1,1,1,1,};
+uint8_t octopusMoveLeg[] = {1,1,1,1,1,};
 
 // legs lengths
-const uint8_t octopus_leg_length[] = {0,4,5,4,3,};
+const uint8_t octopusLegLength[] = {0,4,5,4,3,};
 
-bool show_octopus_leg1[4];
-constexpr bool show_octopus_leg1_settings[5][4]
+bool showOctopusLeg1[4];
+constexpr bool showOctopusLeg1Settings[5][4]
 {
-  { false, false, false, false, },
-  { true, false, false, false, },
-  { true, true, false, false, },
-  { true, true, true, false, },
-  { true, true, true, true, },
+  { false, false, false, false,},
+  { true,  false, false, false,},
+  { true,   true, false, false,},
+  { true,   true,  true, false,},
+  { true,   true,  true,  true,},
 };
 
-bool show_octopus_leg2[5];
-constexpr bool show_octopus_leg2_settings[6][5]
+bool showOctopusLeg2[5];
+constexpr bool showOctopusLeg2Settings[6][5]
 {
   { false, false, false, false, false,},
-  { true, false, false, false, false, },
-  { true, true, false, false, false, },
-  { true, true, true, false, false, },
-  { true, true, true, true, false,},
-  { true, true, true, true, true,},
+  { true,  false, false, false, false,},
+  { true,   true, false, false, false,},
+  { true,   true,  true, false, false,},
+  { true,   true,  true,  true, false,},
+  { true,   true,  true,  true,  true,},
 };
 
-bool show_octopus_leg3[4];
-constexpr bool show_octopus_leg3_settings[5][4]
+bool showOctopusLeg3[4];
+constexpr bool showOctopusLeg3Settings[5][4]
 {
   { false, false, false, false, },
-  { true, false, false, false, },
-  { true, true, false, false, },
-  { true, true, true, false, },
-  { true, true, true, true, },
+  { true,  false, false, false, },
+  { true,   true, false, false, },
+  { true,   true,  true, false, },
+  { true,   true,  true,  true, },
 };
 
-bool show_octopus_leg4[3];
-constexpr bool show_octopus_leg4_settings[4][3]
+bool showOctopusLeg4[3];
+constexpr bool showOctopusLeg4Settings[4][3]
 {
   { false, false, false, },
-  { true, false, false, },
-  { true, true, false, },
-  { true, true, true, },
+  { true,  false, false, },
+  { true,   true, false, },
+  { true,   true,  true, },
 };
 
 

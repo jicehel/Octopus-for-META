@@ -38,14 +38,14 @@ void drawSprite(Sprite sprite, uint8_t sliceY, uint16_t* buffer) {
   if (sliceY < sprite.y + sprite.h && sprite.y < sliceY + sliceHeight) {
     // Determines the boundaries of the sprite surface within the current slice
     uint8_t  xMin = sprite.x;
-    uint8_t  xmax = sprite.x + sprite.w - 1;
+    uint8_t  xMax = sprite.x + sprite.w - 1;
     uint8_t  yMin = sprite.y < sliceY ? sliceY : sprite.y;
     uint8_t  yMax = sprite.y + sprite.h >= sliceY + sliceHeight ? sliceY + sliceHeight - 1 : sprite.y + sprite.h - 1;
     uint8_t  px, py;
     uint16_t color;
     // Display the sprite pixels to be drawn
     for (py = yMin; py <= yMax; py++) {
-      for (px = xMin; px <= xmax; px++) {
+      for (px = xMin; px <= xMax; px++) {
         // Picks the pixel color from the spritesheet
         color = spritesheet[px + py * screenWidth];
         // If color is the color selected for the Sprite
@@ -60,9 +60,9 @@ void drawSprite(Sprite sprite, uint8_t sliceY, uint16_t* buffer) {
 
 
 void drawText(Sprite sprite, uint8_t sliceY, uint16_t* buffer, uint8_t x, uint8_t y) {
-  if (sliceY < y + sprite.h && y < sliceY + sliceHeight) {
+  if ((sliceY < (y + sprite.h)) && (y < (sliceY + sliceHeight))) {
     uint8_t xMin = x;
-    uint8_t xmax = x + sprite.w - 1;
+    uint8_t xMax = x + sprite.w - 1;
     uint8_t yMin = y < sliceY ? sliceY : y;
     uint8_t yMax = y + sprite.h >= sliceY + sliceHeight ? sliceY + sliceHeight - 1 : y + sprite.h - 1;
 
@@ -71,7 +71,7 @@ void drawText(Sprite sprite, uint8_t sliceY, uint16_t* buffer, uint8_t x, uint8_
 
     for (py = yMin; py <= yMax; ++py) {
       sy = py - y + sprite.y;
-      for (px = xMin; px <= xmax; ++px) {
+      for (px = xMin; px <= xMax; ++px) {
         sx = px - xMin + sprite.x;
         color = spritesheet[sx + sy * screenWidth];
         if (color == sRed) {

@@ -5,8 +5,8 @@ byte frameSub = 0;
 
 void die() {
   moveSubButton = false;
-  for(size_t index = 0; index < 4; ++index)
-      show_octopus_leg3[index] = true;
+  for (size_t index = 0; index < 4; ++index)
+    showOctopusLeg3[index] = true;
   diverToShow = 6;
   if ((frameSub == 0) || (frameSub == 2) || (frameSub == 4) || (frameSub == 6)) {
     diverArmToShow = 4;
@@ -39,6 +39,7 @@ void animSubGold() {
       ++score;
       ++getPoint;
       // gb.sound.play("OR.WAV");
+      gb.sound.playOK();
       subGold = true;
       subMove = 5;
       animFrame = 1;
@@ -48,29 +49,30 @@ void animSubGold() {
     if (animFrame == 0) {
       diverToShow = 5;
       diverArmToShow = 1;
-      diverBagToShow = 6 ;
+      diverBagToShow = 5 ;
     }
     if (animFrame == 1) {
       diverToShow = 5;
       diverArmToShow = 2;
-      diverBagToShow = 6 ;
+      diverBagToShow = 5 ;
     }
     if (animFrame == 2) {
       diverToShow = 5;
       diverArmToShow = 3;
-      diverBagToShow = 6 ;
+      diverBagToShow = 5 ;
     }
     if (animFrame == 3) {
       ++score;
       ++getPoint;
       // gb.sound.play("OR.WAV");
+      gb.sound.playOK();
       subGold = true;
       subMove = 5;
       animFrame = 0;
       catchGold = false;
     }
   }
-  if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
+  if ((moveTick % speedAnim) == 0) {
     animFrame++;
   }
 }
@@ -98,21 +100,21 @@ void Sub() {
   if (hited == true && life == 3) {
     animBarca = 0;
     if (animBarca == 0) {
-      show_SpriteDiver1 = true;
-      show_SpriteDiver1_arm1 = true;
-      show_SpriteDiver1_arm2 = false;
-      show_SpriteDiver2 = false;
-      show_SpriteDiver3 = true;
+      showSpriteDiver1 = true;
+      showSpriteDiver1Arm1 = true;
+      showSpriteDiver1Arm2 = false;
+      showSpriteDiver2 = false;
+      showSpriteDiver3 = true;
     }
 
     if (animBarca == 1) {
-      show_SpriteDiver1 = true;
-      show_SpriteDiver1_arm1 = true;
-      show_SpriteDiver1_arm2 = false;
-      show_SpriteDiver2 = true;
-      show_SpriteDiver3 = false;
+      showSpriteDiver1 = true;
+      showSpriteDiver1Arm1 = true;
+      showSpriteDiver1Arm2 = false;
+      showSpriteDiver2 = true;
+      showSpriteDiver3 = false;
     }
-    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
+    if (moveTick % speedAnim == 0) {
       animBarca++;
     }
     die();
@@ -126,27 +128,27 @@ void Sub() {
       frameSub = 0;
       moveSubButton = true;
     }
-    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
+    if ((moveTick % speedAnim) == 0) {
       frameSub++;
       gb.sound.playTick();
     }
   } else if (hited == true && life == 2) {
     animBarca = 0;
     if (animBarca == 0) {
-      show_SpriteDiver1 = false;
-      show_SpriteDiver1_arm1 = false;
-      show_SpriteDiver1_arm2 = true;
-      show_SpriteDiver2 = false;
-      show_SpriteDiver3 = false;
+      showSpriteDiver1 = false;
+      showSpriteDiver1Arm1 = false;
+      showSpriteDiver1Arm2 = true;
+      showSpriteDiver2 = false;
+      showSpriteDiver3 = false;
     }
     if (animBarca == 1) {
-      show_SpriteDiver1 = true;
-      show_SpriteDiver1_arm1 = true;
-      show_SpriteDiver1_arm2 = false;
-      show_SpriteDiver2 = false;
-      show_SpriteDiver3 = false;
+      showSpriteDiver1 = true;
+      showSpriteDiver1Arm1 = true;
+      showSpriteDiver1Arm2 = false;
+      showSpriteDiver2 = false;
+      showSpriteDiver3 = false;
     }
-    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
+    if ((moveTick % speedAnim) == 0) {
       animBarca++;
     }
     die();
@@ -160,17 +162,17 @@ void Sub() {
       frameSub = 0;
       moveSubButton = true;
     }
-    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
+    if ((moveTick % speedAnim) == 0) {
       frameSub++;
       gb.sound.playTick();
     }
   } else if (hited == true && life == 1) {
     moveSubButton = false;
-    show_SpriteDiver1 = false;
-    show_SpriteDiver1_arm1 = false;
-    show_SpriteDiver1_arm2 = false;
-    show_SpriteDiver2 = false;
-    show_SpriteDiver3 = false;
+    showSpriteDiver1 = false;
+    showSpriteDiver1Arm1 = false;
+    showSpriteDiver1Arm2 = false;
+    showSpriteDiver2 = false;
+    showSpriteDiver3 = false;
     die();
     if (frameSub == 8) {
       barcaState = 10;
@@ -182,7 +184,7 @@ void Sub() {
       frameSub = 0;
       moveSubButton = true;
     }
-    if ((moveTick == maxTick) || (moveTick == maxTick / 2)) {
+    if ((moveTick % speedAnim) == 0) {
       frameSub++;
       gb.sound.playTick();
     }
